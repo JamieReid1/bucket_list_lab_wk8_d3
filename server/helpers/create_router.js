@@ -47,14 +47,30 @@ const CreateRouter = function(collection) {
   router.delete('/:id', (req, res) => {
     const id = req.params.id;
       collection
-      .deleteOne({_id: ObjectID(id)})
+        .deleteOne({_id: ObjectID(id)})
+        .then(() => collection.find().toArray())
+        .then((docs) => res.json(docs))
+        .catch((err) => {
+          console.error(err);
+          res.status(500);
+          res.json({ status: 500, error: err });
+    });
+  });
+  // UPDATE
+  router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const newItem = req.body
+    collection
+      .updateOne(
+        {_id: ObjectID(id)},
+        { $set: newItem})
       .then(() => collection.find().toArray())
       .then((docs) => res.json(docs))
       .catch((err) => {
-      console.error(err);
-      res.status(500);
-      res.json({ status: 500, error: err });
-    });
+        console.error(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
   });
 
   return router;
