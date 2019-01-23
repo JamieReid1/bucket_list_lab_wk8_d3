@@ -14,6 +14,7 @@ ListView.prototype.bindEvents = function () {
 };
 
 ListView.prototype.render = function (items) {
+  this.container.innerHTML = ' ';
   const itemView = new ItemView(this.container);
   items.forEach((item) => itemView.render(item));
 };
