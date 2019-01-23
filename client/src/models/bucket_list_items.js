@@ -7,6 +7,15 @@ const BucketListItems = function(url) {
 }
 
 // BucketList.prototype.bindEvents() = function () {
+//   pub_sub
+// };
 
+BucketListItems.prototype.getData = function () {
+  this.request.get()
+  .then((items) => {
+    PubSub.publish('BucketListItems: Data-loaded', items)
+  })
+  .catch(console.error)
 };
+
 module.exports = BucketListItems
